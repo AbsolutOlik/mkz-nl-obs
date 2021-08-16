@@ -509,12 +509,23 @@ path#boostarc {
     bottom: 0;
 }
 
+#overlay-replay:not(.replayBlue):not(.replayOrange) {
+    background-image: url('../assets/img/replay_neutral.png');
+}
+
 .replayBlue {
     background-image: url("../assets/img/replay_blue.png");
 }
 
 .replayOrange {
     background-image: url("../assets/img/replay_orange.png");
+}
+
+.player-picture {
+    position: absolute;
+    right: 350px;
+    bottom: 100px;
+    width: 250px;
 }
 
 .scorerinfo {
