@@ -48,6 +48,7 @@ switch (Config.settings.orange[1]) {
 }
 
 //$('#stinger').hide();
+//Overlay.hideGameOverlay();
 $('#postMatchStats').hide();
 $('#overlay-replay').hide();
 $('#targetinfo').hide();
@@ -68,7 +69,11 @@ WsSubscribers.init("localhost", 49322, false, [
     "cb:heartbeat"
 ]);
 
+let state;
+
 WsSubscribers.subscribe("game", "update_state", (d) => {
+    state = d;
+
     Overlay.updateScoreboard(d);
     Overlay.updateTeamDetails(d);
     Overlay.updateClock(d.game.clock, d.game.isOT)
@@ -97,8 +102,6 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
         $('#overlay-replay').removeClass("replayBlue");
     }
 
-    console.log(d);
-
     $('.ballspeed').text(Math.round(d.goalspeed));
     $('.scorer').text(d.scorer.name);
     if(d.assister.name !== "") {
@@ -108,7 +111,19 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
     else {
         $('.assister').hide();
     }
-   
+
+    try {
+        const scorerPrimaryId = state.teams[d.scorer.teamnum].players[d.scorer.id].primaryID
+        $('.player-picture').attr("src", `assets/img/player/${scorerPrimaryId}.jpg`);
+        $('.player-picture').show();
+        console.log(`Goal scored by ${d.scorer.name} (id: ${scorerPrimaryId})`);
+    } catch {
+        $('.player-picture').hide();
+        console.group();
+        console.error('Could not get state');
+        console.error(state);
+        console.groupEnd();
+    }
 
     setTimeout(() => {
         Overlay.playStinger('stinger');
