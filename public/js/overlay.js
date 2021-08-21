@@ -1,10 +1,38 @@
 const Overlay = {
-    updateScoreboard(data) {
-        $('#match-league').text(Config.settings.liga);
-        $('#format').text(Config.settings.format);
+    updateSeriesInformation(data) {
+        $('#match-league').text(data.roundInfo);
+        $('#format').text(data.format.name);
 
-        $('#team-name-blue').text(Config.settings.blue[0] || data.teams[0].name);
-        $('#team-name-orange').text(Config.settings.orange[0] || data.teams[1].name);
+        $('#team-name-blue').text((Config.settings.blue && Config.settings.blue[0]) || data.blueTeam.name);
+        $('#team-name-orange').text((Config.settings.orange && Config.settings.orange[0]) || data.orangeTeam.name);
+
+        const blueScore = data.scores.seriesScore.blueScore;
+        $('.seriesBlue .first').hide();
+        $('.seriesBlue .second').hide();
+        $('.seriesBlue .third').hide();
+        switch (blueScore) {
+            case 3:
+                $('.seriesBlue .first').show();
+            case 2:
+                $('.seriesBlue .second').show();
+            case 1:
+                $('.seriesBlue .third').show();
+        }
+
+        const orangeScore = data.scores.seriesScore.orangeScore;
+        $('.seriesOrange .first').hide();
+        $('.seriesOrange .second').hide();
+        $('.seriesOrange .third').hide();
+        switch (orangeScore) {
+            case 3:
+                $('.seriesOrange .first').show();
+            case 2:
+                $('.seriesOrange .second').show();
+            case 1:
+                $('.seriesOrange .third').show();
+        }
+    },
+    updateScoreboard(data) {
         $('#team-score-blue').text(data.teams[0].score);
         $('#team-score-orange').text(data.teams[1].score);
     },
@@ -50,7 +78,7 @@ const Overlay = {
     },
     updateClock(clock, isOT) {
         let time = (isOT ? '+' : '') + (new Date(clock.ms * 1000)).toISOString().substr((!isOT && clock.sec < 60) ? 17 : 15, 4);
-           
+
         if (clock.ms !== clock.sec) {
             $('#match-time').text(time);
         }

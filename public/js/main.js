@@ -1,52 +1,5 @@
 console.log("Initialize");
 
-switch (Config.settings.blue[1]) {
-    case '1':
-        $('.seriesBlue .first').show();
-        $('.seriesBlue .second').hide();
-        $('.seriesBlue .third').hide();
-        break;
-    case '2':
-        $('.seriesBlue .first').show();
-        $('.seriesBlue .second').show();
-        $('.seriesBlue .third').hide();
-        break;
-    case '3':
-        $('.seriesBlue .first').show();
-        $('.seriesBlue .second').show();
-        $('.seriesBlue .third').show();
-        break;
-    default:
-        $('.seriesBlue .first').hide();
-        $('.seriesBlue .second').hide();
-        $('.seriesBlue .third').hide();
-        break;
-}
-
-
-switch (Config.settings.orange[1]) {
-    case '1':
-        $('.seriesOrange .first').show();
-        $('.seriesOrange .second').hide();
-        $('.seriesOrange .third').hide();
-        break;
-    case '2':
-        $('.seriesOrange .first').show();
-        $('.seriesOrange .second').show();
-        $('.seriesOrange .third').hide();
-        break;
-    case '3':
-        $('.seriesOrange .first').show();
-        $('.seriesOrange .second').show();
-        $('.seriesOrange .third').show();
-        break;
-    default:
-        $('.seriesOrange .first').hide();
-        $('.seriesOrange .second').hide();
-        $('.seriesOrange .third').hide();
-        break;
-}
-
 //$('#stinger').hide();
 //Overlay.hideGameOverlay();
 $('#postMatchStats').hide();
@@ -148,4 +101,10 @@ WsSubscribers.subscribe("game", "replay_will_end", () => {
 
 WsSubscribers.subscribe("game", "podium_start", () => {
     Overlay.hideGameOverlay();
+});
+
+let rocsState;
+WsSubscribers.subscribe("NitroLeague", "match", (data) => {
+    rocsState = data;
+    Overlay.updateSeriesInformation(rocsState);
 });
