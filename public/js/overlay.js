@@ -6,30 +6,30 @@ const Overlay = {
         $('#team-name-blue').text((Config.settings.blue && Config.settings.blue[0]) || data.blueTeam.name);
         $('#team-name-orange').text((Config.settings.orange && Config.settings.orange[0]) || data.orangeTeam.name);
 
-        const blueScore = data.scores.seriesScore.blueScore;
+        const blueScore = Config.settings.blue && Config.settings.blue[1] ? Config.settings.blue[1] : data.scores.seriesScore.blueScore;
         $('.seriesBlue .first').hide();
         $('.seriesBlue .second').hide();
         $('.seriesBlue .third').hide();
         switch (blueScore) {
             case 3:
-                $('.seriesBlue .first').show();
+                $('.seriesBlue .third').show();
             case 2:
                 $('.seriesBlue .second').show();
             case 1:
-                $('.seriesBlue .third').show();
+                $('.seriesBlue .first').show();
         }
 
-        const orangeScore = data.scores.seriesScore.orangeScore;
+        const orangeScore = Config.settings.orange && Config.settings.orange[1] ? Config.settings.orange[1] : data.scores.seriesScore.orangeScore;
         $('.seriesOrange .first').hide();
         $('.seriesOrange .second').hide();
         $('.seriesOrange .third').hide();
         switch (orangeScore) {
             case 3:
-                $('.seriesOrange .first').show();
+                $('.seriesOrange .third').show();
             case 2:
                 $('.seriesOrange .second').show();
             case 1:
-                $('.seriesOrange .third').show();
+                $('.seriesOrange .first').show();
         }
     },
     updateScoreboard(data) {
