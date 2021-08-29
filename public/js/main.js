@@ -67,7 +67,11 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
 
     try {
         const scorerPrimaryId = state.teams[d.scorer.teamnum].players[d.scorer.id].primaryID
-        $('.player-picture').attr("src", `assets/img/player/${scorerPrimaryId}.jpg`);
+
+        const players = rocsState.blueTeam.players.concat(rocsState.orangeTeam.players);
+        const scorerImageUrl = players.find(p => p.steam === scorerPrimaryId).image;
+
+        $('.player-picture').attr("src", scorerImageUrl);
         $('.player-picture').show();
         console.log(`Goal scored by ${d.scorer.name} (id: ${scorerPrimaryId})`);
     } catch {
