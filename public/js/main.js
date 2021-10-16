@@ -1,52 +1,5 @@
 console.log("Initialize");
 
-switch (Config.settings.blue[1]) {
-    case '1':
-        $('.seriesBlue .first').show();
-        $('.seriesBlue .second').hide();
-        $('.seriesBlue .third').hide();
-        break;
-    case '2':
-        $('.seriesBlue .first').show();
-        $('.seriesBlue .second').show();
-        $('.seriesBlue .third').hide();
-        break;
-    case '3':
-        $('.seriesBlue .first').show();
-        $('.seriesBlue .second').show();
-        $('.seriesBlue .third').show();
-        break;
-    default:
-        $('.seriesBlue .first').hide();
-        $('.seriesBlue .second').hide();
-        $('.seriesBlue .third').hide();
-        break;
-}
-
-
-switch (Config.settings.orange[1]) {
-    case '1':
-        $('.seriesOrange .first').show();
-        $('.seriesOrange .second').hide();
-        $('.seriesOrange .third').hide();
-        break;
-    case '2':
-        $('.seriesOrange .first').show();
-        $('.seriesOrange .second').show();
-        $('.seriesOrange .third').hide();
-        break;
-    case '3':
-        $('.seriesOrange .first').show();
-        $('.seriesOrange .second').show();
-        $('.seriesOrange .third').show();
-        break;
-    default:
-        $('.seriesOrange .first').hide();
-        $('.seriesOrange .second').hide();
-        $('.seriesOrange .third').hide();
-        break;
-}
-
 //$('#stinger').hide();
 //Overlay.hideGameOverlay();
 $('#postMatchStats').hide();
@@ -114,7 +67,11 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
 
     try {
         const scorerPrimaryId = state.teams[d.scorer.teamnum].players[d.scorer.id].primaryID
-        $('.player-picture').attr("src", `assets/img/player/${scorerPrimaryId}.jpg`);
+
+        const players = rocsState.blueTeam.players.concat(rocsState.orangeTeam.players);
+        const scorerImageUrl = players.find(p => p.steam === scorerPrimaryId).image;
+
+        $('.player-picture').attr("src", scorerImageUrl);
         $('.player-picture').show();
         console.log(`Goal scored by ${d.scorer.name} (id: ${scorerPrimaryId})`);
     } catch {
@@ -148,4 +105,10 @@ WsSubscribers.subscribe("game", "replay_will_end", () => {
 
 WsSubscribers.subscribe("game", "podium_start", () => {
     Overlay.hideGameOverlay();
+});
+
+let rocsState;
+WsSubscribers.subscribe("NitroLeague", "match", (data) => {
+    rocsState = data;
+    Overlay.updateSeriesInformation(rocsState);
 });

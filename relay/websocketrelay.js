@@ -67,6 +67,7 @@ prompt.get([
      * @type {WebSocket}
      */
     let wsClient;
+    let rocsClient;
     let relayMsDelay = parseInt(r.delay, 10);
 
     const wss = new WebSocket.Server({ port: r.port });
@@ -98,6 +99,7 @@ prompt.get([
     });
 
     initRocketLeagueWebsocket(r.rocketLeagueHost);
+    initRocketLeagueOverlayControlSystemWebsocket("wss://rocs.unirocketeers.com/ws");
     setInterval(function () {
         if (wsClient.readyState === WebSocket.CLOSED) {
             warn.wb("Rocket League WebSocket Server Closed. Attempting to reconnect");
@@ -168,6 +170,39 @@ prompt.get([
         };
         wsClient.onerror = function (err) {
             error.wb(`Error connecting to Rocket League on host "${rocketLeagueHost}"\nIs the plugin loaded into Rocket League? Run the command "plugin load sos" from the BakkesMod console to make sure`);
+        };
+    }
+
+    function initRocketLeagueOverlayControlSystemWebsocket(rocsHost) {
+        function registerEvent(event) {
+            if (rocsClient.OPEN) {
+                rocsClient.send(
+                JSON.stringify({
+                  event: "wsRelay:register",
+                  data: `NitroLeague:${event}`
+                })
+              );
+            }
+          }
+
+        rocsClient = new WebSocket(rocsHost);
+
+        rocsClient.onopen = function open() {
+            success.wb("Connected to Rocket League Overlay Control System on " + rocsHost);
+            registerEvent("overlayload");
+            registerEvent("match");
+        };
+        rocsClient.onmessage = function(message) {
+            let sendMessage = message.data;
+            if (sendMessage.substr(0, 1) !== '{') {
+                sendMessage = atob(message.data);
+            }
+            setTimeout(() => {
+                sendRelayMessage(0, sendMessage);
+            }, relayMsDelay);
+        };
+        rocsClient.onerror = function (err) {
+            error.wb('Error connecting to Rocket League Overlay Control System"\nPlease check if https://rocs.unirocketeers.com/ is accessible');
         };
     }
 });
