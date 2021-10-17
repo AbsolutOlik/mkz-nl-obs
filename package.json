@@ -6,7 +6,8 @@
   "bin": "bin.js",
   "icon": "mkz-nl-obs.ico",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "package": "pkg . -o mkz-nl-obs -t node16-win-x64"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,8 @@
     "cli-msg": "^1.0.0",
     "prompt": "^1.1.0",
     "ws": "^7.4.6"
+  },
+  "devDependencies": {
+    "pkg": "^5.3.3"
   }
 }
