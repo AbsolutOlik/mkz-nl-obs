@@ -85,6 +85,15 @@ const Overlay = {
             }
         });
     },
+    updatePlayerCams({playerCams}) {
+        playerCams.forEach((players, teamId) => {
+            const team = teamId === 0 ? 'left' : 'right';
+            players.forEach((player, index) => {
+                $(`.${team}-team-player-${index+1}-cam`).attr('src', player.obs);
+                $(`.${team}-team-player-${index+1}-name`).text(player.player.ign);
+            })
+        });
+    },
     updateClock(clock, isOT) {
         let time = (isOT ? '+' : '') + (new Date(clock.ms * 1000)).toISOString().substr((!isOT && clock.sec < 60) ? 17 : 15, 4);
 

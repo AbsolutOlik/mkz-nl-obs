@@ -191,6 +191,7 @@ prompt.get([
             success.wb("Connected to Rocket League Overlay Control System on " + rocsHost);
             registerEvent("overlayload");
             registerEvent("match");
+            registerEvent("cams");
         };
         rocsClient.onmessage = function(message) {
             let sendMessage = message.data;
