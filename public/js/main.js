@@ -64,10 +64,8 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
         $(".assister").hide();
     }
 
-    if (Config.settings.playerCams) {
+    if (Config.settings.playerCams.includes('goal')) {
         $(".player-cams").show();
-    } else {
-        $(".player-cams").hide();
     }
     if (Config.settings.playerPicture) {
         try {
@@ -105,13 +103,13 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
 WsSubscribers.subscribe("game", "replay_start", () => {
     Overlay.hideGameOverlay();
     $("#overlay-replay").show();
-    $(".player-cams").show();
+    if (Config.settings.playerCams.includes('goal')) $(".player-cams").show();
 });
 
 WsSubscribers.subscribe("game", "replay_end", () => {
     Overlay.showGameOverlay();
     $("#overlay-replay").hide();
-    $(".player-cams").hide();
+    if (Config.settings.playerCams.includes('goal')) $(".player-cams").hide();
 });
 
 WsSubscribers.subscribe("game", "replay_will_end", () => {
@@ -120,8 +118,21 @@ WsSubscribers.subscribe("game", "replay_will_end", () => {
     }, Config.settings.stingerDelay * 1.5);
 });
 
+WsSubscribers.subscribe("game", "pre_countdown_begin", () => {
+    if (Config.settings.playerCams.includes('kickoff')) {
+        $(".player-cams").show();
+        setTimeout(() => {
+            if (Config.settings.playerCams.includes('ot') && state.game.isOT)
+                $(".player-cams").show();
+            else
+                $(".player-cams").hide();
+        }, 1000 * (Config.settings.kickoffPlayerCamTime || 15))
+    }
+})
+
 WsSubscribers.subscribe("game", "podium_start", () => {
     Overlay.hideGameOverlay();
+    $(".player-cams").hide();
 });
 
 WsSubscribers.subscribe("NitroLeague", "overlayload", (data) => {
