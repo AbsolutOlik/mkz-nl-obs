@@ -539,6 +539,10 @@ path#boostarc {
     margin-right: 50px;
 }
 
+.assister-caption {
+    color: #c40000;
+}
+
 .scorewrapper {
     width: inherit;
     position: absolute;
