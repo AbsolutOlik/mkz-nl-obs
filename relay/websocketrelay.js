@@ -125,7 +125,8 @@ prompt.get([
 
         message = JSONData.beautify(message);
 
-        log.wb(senderConnectionId + "> Sent " + json.event);
+        if (!['game:update_state', 'game:nameplate_tick'].includes(json.event))
+            log.wb(senderConnectionId + "> Sent " + json.event);
         let channelEvent = (json['event']).split(':');
         if (channelEvent[0] === 'wsRelay') {
             if (channelEvent[1] === 'register') {
