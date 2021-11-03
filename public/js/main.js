@@ -60,7 +60,7 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
     if (d.assister.name !== "") {
         $(".assister-caption").show();
         $(".assister").show();
-        $(".assister").text("Assist: " + d.assister.name);
+        $(".assister").text(d.assister.name);
     } else {
         $(".assister-caption").hide();
         $(".assister").hide();

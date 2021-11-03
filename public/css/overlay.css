@@ -533,14 +533,15 @@ path#boostarc {
     text-shadow: 0 0 10px #855151, 0 0 10px #910e0e;
 }
 
-.scorerinfo span {
+.scorerinfo span.white {
     color: white;
     word-spacing: normal;
     margin-right: 50px;
 }
 
 .assister-caption {
-    color: #c40000;
+    color: #c40000!;
+    text-shadow: 0 0 10px #855151, 0 0 10px #910e0e;
 }
 
 .scorewrapper {
