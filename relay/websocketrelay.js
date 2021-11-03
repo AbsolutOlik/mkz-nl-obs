@@ -6,6 +6,7 @@ const JSONData = require('./JSONData');
 let argv = require('minimist')(process.argv);
 
 let promptsPassed = false;
+let rocsUrl = "wss://rocs.unirocketeers.com/ws";
 
 function addPromptOverrideProperty(key, val) {
     if (!prompt.override) {
@@ -99,17 +100,20 @@ prompt.get([
     });
 
     initRocketLeagueWebsocket(r.rocketLeagueHost);
-    initRocketLeagueOverlayControlSystemWebsocket("wss://rocs.unirocketeers.com/ws");
+    initRocketLeagueOverlayControlSystemWebsocket(rocsUrl);
     setInterval(function () {
         if (wsClient.readyState === WebSocket.CLOSED) {
             warn.wb("Rocket League WebSocket Server Closed. Attempting to reconnect");
             initRocketLeagueWebsocket(r.rocketLeagueHost);
         }
+        if (rocsClient.readyState === WebSocket.CLOSED) {
+            warn.wb("Connection to ROCS closed. Attempting to reconnect");
+            initRocketLeagueOverlayControlSystemWebsocket(rocsUrl);
+        }
     }, 10000);
 
     function sendRelayMessage(senderConnectionId, message) {
         let json = JSON.parse(message);
-        //TODO manipulate sent json data
 
         message = JSONData.beautify(message);
 
