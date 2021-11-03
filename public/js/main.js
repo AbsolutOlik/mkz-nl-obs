@@ -18,11 +18,7 @@ WsSubscribers.subscribe("ws", "open", function () {
     }, 1000);
 });
 
-WsSubscribers.init("localhost", 49322, false, [
-    "game:update_state",
-    "game:nameplate_tick",
-    "cb:heartbeat",
-]);
+WsSubscribers.init();
 
 let state;
 

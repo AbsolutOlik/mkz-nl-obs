@@ -1,20 +1,31 @@
 const WsSubscribers = {
+    host: 'localhost',
+    port: 49322,
+    debug: false,
+    debugFilters: [
+        "game:update_state",
+        "game:nameplate_tick",
+        "cb:heartbeat",
+    ],
     __subscribers: {},
     websocket: undefined,
     webSocketConnected: false,
     registerQueue: [],
     init: function(host, port, debug, debugFilters) {
-        port = port || 49322;
-        debug = debug || false;
-        if (debug) {
-            if (debugFilters !== undefined) {
+        WsSubscribers.host = host || WsSubscribers.host;
+        WsSubscribers.port = port || WsSubscribers.port;
+        WsSubscribers.debug = debug || WsSubscribers.debug;
+        WsSubscribers.debugFilters = debugFilters || WsSubscribers.debugFilters;
+        
+        if (WsSubscribers.debug) {
+            if (WsSubscribers.debugFilters !== undefined) {
                 console.warn("WebSocket Debug Mode enabled with filtering. Only events not in the filter list will be dumped");
             } else {
                 console.warn("WebSocket Debug Mode enabled without filters applied. All events will be dumped to console");
                 console.warn("To use filters, pass in an array of 'channel:event' strings to the second parameter of the init function");
             }
         }
-        WsSubscribers.webSocket = new WebSocket("ws://" + host + ":" + port);
+        WsSubscribers.webSocket = new WebSocket("ws://" + WsSubscribers.host + ":" + WsSubscribers.port);
         WsSubscribers.webSocket.onmessage = function (event) {
             let jEvent = JSON.parse(event.data);
             if (!jEvent.hasOwnProperty('event')) {
@@ -23,10 +34,10 @@ const WsSubscribers = {
             let eventSplit = jEvent.event.split(':');
             let channel = eventSplit[0];
             let event_event = eventSplit[1];
-            if (debug) {
-                if (!debugFilters) {
+            if (WsSubscribers.debug) {
+                if (!WsSubscribers.debugFilters) {
                     console.log(channel, event_event, jEvent);
-                } else if (debugFilters && debugFilters.indexOf(jEvent.event) < 0) {
+                } else if (WsSubscribers.debugFilters && WsSubscribers.debugFilters.indexOf(jEvent.event) < 0) {
                     console.log(channel, event_event, jEvent);
                 }
             }
@@ -38,7 +49,6 @@ const WsSubscribers = {
             WsSubscribers.registerQueue.forEach((r) => {
                 WsSubscribers.send("wsRelay", "register", r);
             });
-            WsSubscribers.registerQueue = [];
         };
         WsSubscribers.webSocket.onerror = function () {
             WsSubscribers.triggerSubscribers("ws", "error");
@@ -46,7 +56,12 @@ const WsSubscribers = {
         };
         WsSubscribers.webSocket.onclose = function () {
             WsSubscribers.triggerSubscribers("ws", "close");
+            WsSubscribers.websocket = undefined;
             WsSubscribers.webSocketConnected = false;
+            setTimeout(() => {
+                console.log('Trying to reconnect');
+                WsSubscribers.init()
+            }, 1000);;
         };
     },
     /**
@@ -99,6 +114,10 @@ const WsSubscribers = {
         }
     },
     send: function (channel, event, data) {
+        if (!WsSubscribers.webSocketConnected) {
+            console.error('Relay is not connected');
+            return;
+        }
         if (typeof channel !== 'string') {
             console.error("Channel must be a string");
             return;
