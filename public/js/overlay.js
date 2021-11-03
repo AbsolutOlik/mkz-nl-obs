@@ -86,11 +86,12 @@ const Overlay = {
         });
     },
     updatePlayerCams({playerCams}) {
+        console.log(playerCams);
         playerCams.forEach((players, teamId) => {
             const team = teamId === 0 ? 'left' : 'right';
             players.forEach((player, index) => {
                 $(`.${team}-team-player-${index+1}-cam`).attr('src', player.obs);
-                $(`.${team}-team-player-${index+1}-name`).text(player.player.ign);
+                $(`.${team}-team-player-${index+1}-name`).text(player.player?.ign || 'Unknown Player');
             })
         });
     },
