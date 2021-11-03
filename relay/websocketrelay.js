@@ -69,6 +69,7 @@ prompt.get([
      */
     let wsClient;
     let rocsClient;
+    let rocsState;
     let relayMsDelay = parseInt(r.delay, 10);
 
     const wss = new WebSocket.Server({ port: r.port });
@@ -115,6 +116,13 @@ prompt.get([
     function sendRelayMessage(senderConnectionId, message) {
         let json = JSON.parse(message);
 
+        if (json.event === 'NitroLeague:overlayload')
+            rocsState = json.data;
+        else if (json.event === 'NitroLeague:match')
+            rocsState = {...rocsState, ...json.data}
+        else if (json.event === 'NitroLeague:cams')
+            rocsState.playerCams = json.data;
+
         message = JSONData.beautify(message);
 
         log.wb(senderConnectionId + "> Sent " + json.event);
@@ -124,6 +132,8 @@ prompt.get([
                 if (connections[senderConnectionId].registeredFunctions.indexOf(json['data']) < 0) {
                     connections[senderConnectionId].registeredFunctions.push(json['data']);
                     info.wb(senderConnectionId + "> Registered to receive: "+json['data']);
+                    if (json.data === 'NitroLeague:overlayload')
+                        connections[senderConnectionId].connection.send(JSON.stringify({event: 'NitroLeague:overlayload', data: rocsState}))
                 } else {
                     warn.wb(senderConnectionId + "> Attempted to register an already registered function: "+json['data']);
                 }

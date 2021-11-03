@@ -140,14 +140,16 @@ WsSubscribers.subscribe("game", "podium_start", () => {
 WsSubscribers.subscribe("NitroLeague", "overlayload", (data) => {
     rocsState = data;
     Overlay.updateSeriesInformation(rocsState);
+    Overlay.updatePlayerCams(rocsState.playerCams);
 });
 
 let rocsState;
 WsSubscribers.subscribe("NitroLeague", "match", (data) => {
-    rocsState = data;
-    Overlay.updateSeriesInformation(rocsState);
+    rocsState = {...rocsState, ...data};
+    Overlay.updateSeriesInformation(data);
 });
 
 WsSubscribers.subscribe("NitroLeague", "cams", (data) => {
+    rocsState.playerCams = data;
     Overlay.updatePlayerCams(data);
 });
