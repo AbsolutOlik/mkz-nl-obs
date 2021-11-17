@@ -77,6 +77,8 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
                 (p) => p.steam === scorerPrimaryId
             ).image;
 
+            if (!scorerImageUrl) throw new Error("No image for that player");
+
             $(".player-picture").attr("src", scorerImageUrl);
             $(".player-picture").show();
             console.log(
