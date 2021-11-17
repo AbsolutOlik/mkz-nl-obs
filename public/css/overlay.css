@@ -524,36 +524,27 @@ path#boostarc {
     width: 250px;
 }
 
+ /* goal scored infos */
 .scorerinfo {
     position: absolute;
     width: 100%;
-    bottom: 150px;
+    bottom: 85px;
     font-size: 25px;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.scorerinfo > span {
+    margin: 0 25px;
+}
+
+.scorerinfo span.red-text {
     color: #c40000;
     text-shadow: 0 0 10px #855151, 0 0 10px #910e0e;
 }
 
-.scorerinfo span.white {
-    color: white;
-    word-spacing: normal;
-    margin-right: 50px;
-}
-
-.assister-caption {
-    color: #c40000!;
-    text-shadow: 0 0 10px #855151, 0 0 10px #910e0e;
-}
-
-.scorewrapper {
-    width: inherit;
-    position: absolute;
-    text-align: center;
-}
-
-span.nomargin {
-    margin: 0;
-}
-
+/* stinger stuff */
 .stinger {
     position: absolute;
     left: 0;

@@ -54,13 +54,9 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
     $(".ballspeed").text(Math.round(d.goalspeed));
     $(".scorer").text(d.scorer.name);
     if (d.assister.name !== "") {
-        $(".assister-caption").show();
-        $(".assister").show();
         $(".assister").text(d.assister.name);
-    } else {
-        $(".assister-caption").hide();
-        $(".assister").hide();
-    }
+        $(".assister-span").show();
+    } else $(".assister-span").hide();
 
     if (Config.settings.playerCams.includes('goal')) {
         $(".player-cams").show();
