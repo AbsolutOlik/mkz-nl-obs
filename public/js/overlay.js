@@ -91,7 +91,7 @@ const Overlay = {
             const team = teamId === 0 ? 'left' : 'right';
             players.forEach((player, index) => {
                 $(`.${team}-team-player-${index+1}-cam`).attr('src', player.obs);
-                $(`.${team}-team-player-${index+1}-name`).text(player.player?.ign || 'Unknown Player');
+                $(`.${team}-team-player-${index+1}-name`).text(player.player ? player.player.ign : 'Unknown Player');
             })
         });
     },
