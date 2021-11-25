@@ -36,16 +36,14 @@ const Overlay = {
         /* Team logos */
         $('.sumTeamBlue').css('background-image', `url("${data.blueTeam.organisation.logos[0].logo_src}")`);
         $('div.iconleft').css('background-image', `url("${data.blueTeam.organisation.logos[0].logo_src}")`);
-        $('div.iconstatsBlue').css('background-image', `url("${data.blueTeam.organisation.logos[0].logo_src}")`);
         $('.sumTeamOrange').css('background-image', `url("${data.orangeTeam.organisation.logos[0].logo_src}")`);
         $('div.iconright').css('background-image', `url("${data.orangeTeam.organisation.logos[0].logo_src}")`);
-        $('div.iconstatsOrange').css('background-image', `url("${data.orangeTeam.organisation.logos[0].logo_src}")`);
     },
     updateScoreboard(data) {
         $('#team-score-blue').text(data.teams[0].score);
         $('#team-score-orange').text(data.teams[1].score);
     },
-    updateTargetHUD(player) {
+    updateTargetHUD(player, rocsState) {
         $('#targetinfo #header .name').text(player.name);
         $('#targetinfo #statsvalue .score').text(player.score);
         $('#targetinfo #statsvalue .goals').text(player.goals);
@@ -57,11 +55,13 @@ const Overlay = {
             $('body').css('--teamcolor', '#1388c6');
             $('.iconstats').addClass('iconstatsBlue');
             $('.iconstats').removeClass('iconstatsOrange');
+            $('div.iconstatsBlue').css('background-image', `url("${rocsState.blueTeam.organisation.logos[0].logo_src}")`);
         }
         else {
             $('body').css('--teamcolor', '#ff5513');
             $('.iconstats').addClass('iconstatsOrange');
             $('.iconstats').removeClass('iconstatsBlue');
+            $('div.iconstatsOrange').css('background-image', `url("${rocsState.orangeTeam.organisation.logos[0].logo_src}")`);
         }
 
         $('#boostmeter .boost.value').text(player.boost);

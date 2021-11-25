@@ -11,7 +11,7 @@ const Config = {
      */
     "playerCams": [], // "playerCams": ["kickoff", "ot", "goal"],
     "kickoffPlayerCamTime": 15, // Time how long the player cams should be active from kickoff (will only work if playerCams above includes 'kickoff')
-    "playerPicture": false,
+    "playerPicture": true,
     /* Uncomment this section to override team names and series score from ROCS
     "blue": [
       "Team Blue",

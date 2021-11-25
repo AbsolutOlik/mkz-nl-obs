@@ -35,7 +35,7 @@ WsSubscribers.subscribe("game", "update_state", (d) => {
         let player = d.teams[teamID].players[target];
         $("#targetinfo").show();
         $("#boostmeter").show();
-        Overlay.updateTargetHUD(player);
+        Overlay.updateTargetHUD(player, rocsState);
     } else {
         $("#targetinfo").hide();
         $("#boostmeter").hide();
