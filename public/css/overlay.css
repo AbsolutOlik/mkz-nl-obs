@@ -500,7 +500,7 @@ path#boostarc {
 #overlay-replay {
     position: absolute;
     width: 1920px;
-    height: 212px;
+    height: 1249px;
     left: 0;
     bottom: 0;
 }
@@ -519,9 +519,9 @@ path#boostarc {
 
 .player-picture {
     position: absolute;
-    right: 25px;
-    bottom: 112px;
-    width: 250px;
+    right: 0px;
+    bottom: 167px;
+    width: 416px;
 }
 
  /* goal scored infos */
