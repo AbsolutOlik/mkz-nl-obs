@@ -500,7 +500,7 @@ path#boostarc {
 #overlay-replay {
     position: absolute;
     width: 1920px;
-    height: 212px;
+    height: 1249px;
     left: 0;
     bottom: 0;
 }
@@ -519,36 +519,32 @@ path#boostarc {
 
 .player-picture {
     position: absolute;
-    right: 25px;
-    bottom: 112px;
-    width: 250px;
+    right: 0px;
+    bottom: 167px;
+    width: 416px;
 }
 
+ /* goal scored infos */
 .scorerinfo {
     position: absolute;
     width: 100%;
-    bottom: 150px;
+    bottom: 85px;
     font-size: 25px;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.scorerinfo > span {
+    margin: 0 25px;
+}
+
+.scorerinfo span.red-text {
     color: #c40000;
     text-shadow: 0 0 10px #855151, 0 0 10px #910e0e;
 }
 
-.scorerinfo span {
-    color: white;
-    word-spacing: normal;
-    margin-right: 50px;
-}
-
-.scorewrapper {
-    width: inherit;
-    position: absolute;
-    text-align: center;
-}
-
-span.nomargin {
-    margin: 0;
-}
-
+/* stinger stuff */
 .stinger {
     position: absolute;
     left: 0;
@@ -701,8 +697,37 @@ span.nomargin {
     border-bottom: 5px solid #034DA4;
 }
 
+.player-cams {
+    position: absolute;
+    height: 1080px;
+    width: 1920px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
 
+.player-cams iframe {
+    position: relative;
+}
 
+.player-cam {
+    position: relative;
+    height: 180px;
+    width: 320px;
+}
+
+.left-team-player-cams, .right-team-player-cams {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.player-cams > div > div > div {
+    position: relative;
+    bottom: 30px;
+    text-align: center;
+    opacity: 0.8;
+}
 
 
 

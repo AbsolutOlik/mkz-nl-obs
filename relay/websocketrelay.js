@@ -6,6 +6,7 @@ const JSONData = require('./JSONData');
 let argv = require('minimist')(process.argv);
 
 let promptsPassed = false;
+let rocsUrl = "wss://rocs.unirocketeers.com/ws";
 
 function addPromptOverrideProperty(key, val) {
     if (!prompt.override) {
@@ -68,6 +69,7 @@ prompt.get([
      */
     let wsClient;
     let rocsClient;
+    let rocsState;
     let relayMsDelay = parseInt(r.delay, 10);
 
     const wss = new WebSocket.Server({ port: r.port });
@@ -99,27 +101,40 @@ prompt.get([
     });
 
     initRocketLeagueWebsocket(r.rocketLeagueHost);
-    initRocketLeagueOverlayControlSystemWebsocket("wss://rocs.unirocketeers.com/ws");
+    initRocketLeagueOverlayControlSystemWebsocket(rocsUrl);
     setInterval(function () {
         if (wsClient.readyState === WebSocket.CLOSED) {
             warn.wb("Rocket League WebSocket Server Closed. Attempting to reconnect");
             initRocketLeagueWebsocket(r.rocketLeagueHost);
         }
+        if (rocsClient.readyState === WebSocket.CLOSED) {
+            warn.wb("Connection to ROCS closed. Attempting to reconnect");
+            initRocketLeagueOverlayControlSystemWebsocket(rocsUrl);
+        }
     }, 10000);
 
     function sendRelayMessage(senderConnectionId, message) {
         let json = JSON.parse(message);
-        //TODO manipulate sent json data
+
+        if (json.event === 'NitroLeague:overlayload')
+            rocsState = json.data;
+        else if (json.event === 'NitroLeague:match')
+            rocsState = {...rocsState, ...json.data}
+        else if (json.event === 'NitroLeague:cams')
+            rocsState.playerCams = json.data;
 
         message = JSONData.beautify(message);
 
-        log.wb(senderConnectionId + "> Sent " + json.event);
+        if (!['game:update_state', 'game:nameplate_tick'].includes(json.event))
+            log.wb(senderConnectionId + "> Sent " + json.event);
         let channelEvent = (json['event']).split(':');
         if (channelEvent[0] === 'wsRelay') {
             if (channelEvent[1] === 'register') {
                 if (connections[senderConnectionId].registeredFunctions.indexOf(json['data']) < 0) {
                     connections[senderConnectionId].registeredFunctions.push(json['data']);
                     info.wb(senderConnectionId + "> Registered to receive: "+json['data']);
+                    if (json.data === 'NitroLeague:overlayload')
+                        connections[senderConnectionId].connection.send(JSON.stringify({event: 'NitroLeague:overlayload', data: rocsState}))
                 } else {
                     warn.wb(senderConnectionId + "> Attempted to register an already registered function: "+json['data']);
                 }
@@ -191,6 +206,7 @@ prompt.get([
             success.wb("Connected to Rocket League Overlay Control System on " + rocsHost);
             registerEvent("overlayload");
             registerEvent("match");
+            registerEvent("cams");
         };
         rocsClient.onmessage = function(message) {
             let sendMessage = message.data;
