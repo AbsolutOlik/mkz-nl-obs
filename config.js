@@ -9,9 +9,9 @@ const Config = {
      * - ot -> show player cams while ot
      * - goal -> show cams when a goal was scored
      */
-    "playerCams": [], // "playerCams": ["kickoff", "ot", "goal"],
+    "playerCams": ["kickoff", "goal"], // "playerCams": ["kickoff", "ot", "goal"],
     "kickoffPlayerCamTime": 15, // Time how long the player cams should be active from kickoff (will only work if playerCams above includes 'kickoff')
-    "playerPicture": true,
+    "playerPicture": false,
     /* Uncomment this section to override team names and series score from ROCS
     "blue": [
       "Team Blue",

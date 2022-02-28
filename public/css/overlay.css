@@ -706,14 +706,17 @@ path#boostarc {
     justify-content: space-between;
 }
 
+
 .player-cams iframe {
-    position: relative;
+    position: absolute;
+    top: 7px;
+    left: 6px;
 }
 
 .player-cam {
     position: relative;
-    height: 180px;
-    width: 320px;
+    width: 332px;
+    height: 194px;
 }
 
 .left-team-player-cams, .right-team-player-cams {
@@ -722,12 +725,21 @@ path#boostarc {
     gap: 10px;
 }
 
+.player-cams img {
+    position: absolute;
+    width: 332px;
+    height: 194px;
+    left: 0px;
+    top: 0px;
+}
+
 .player-cams > div > div > div {
-    position: relative;
-    bottom: 30px;
+    position: absolute;
+    bottom: 6px;
+    left: 7px;
+    width: 320px;
     text-align: center;
     opacity: 0.8;
 }
-
 
 
