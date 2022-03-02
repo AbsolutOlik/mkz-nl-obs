@@ -9,6 +9,7 @@ $("#overlay-replay").hide();
 $("#targetinfo").hide();
 $("#boostmeter").hide();
 $(".player-cams").hide();
+$(".player-picture").hide();
 
 WsSubscribers.subscribe("ws", "open", function () {
     WsSubscribers.send("cb", "first_connect", {
@@ -95,7 +96,15 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
 
     //Quick 'n dirty INC.
     //naive implementation
-    Overlay.loadReplayCamData(d.scorer.name, d.scorer.teamnum, rocsState.playerCams);
+    try {
+        Overlay.loadReplayCamData(d.scorer.name, d.scorer.teamnum, rocsState.playerCams);
+        $('.replay-cam-wrapper').show();
+        //$('.player-picture').hide();
+    } catch {
+        $('.replay-cam-wrapper').hide();
+        //evtl. player picture?
+        //$(.player-picture).show();
+    }
 
     setTimeout(() => {
         Overlay.playStinger("stinger");
