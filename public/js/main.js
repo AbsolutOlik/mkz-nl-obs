@@ -1,6 +1,8 @@
+let rocsState;
+
 console.log("Initialize");
 
-//$('#stinger').hide();
+$('#stinger').hide();
 //Overlay.hideGameOverlay();
 $("#postMatchStats").hide();
 $("#overlay-replay").hide();
@@ -91,6 +93,10 @@ WsSubscribers.subscribe("game", "goal_scored", (d) => {
         $(".player-picture").hide();
     }
 
+    //Quick 'n dirty INC.
+    //naive implementation
+    Overlay.loadReplayCamData(d.scorer.name, d.scorer.teamnum, rocsState.playerCams);
+
     setTimeout(() => {
         Overlay.playStinger("stinger");
     }, Config.settings.stingerDelay * 3);
@@ -131,7 +137,6 @@ WsSubscribers.subscribe("game", "podium_start", () => {
     $(".player-cams").hide();
 });
 
-let rocsState;
 WsSubscribers.subscribe("NitroLeague", "overlayload", (data) => {
     rocsState = data;
     console.log(data);

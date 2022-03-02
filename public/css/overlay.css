@@ -517,6 +517,38 @@ path#boostarc {
     background-image: url("../assets/img/replay_orange.png");
 }
 
+.replay-cam-wrapper {
+    position: absolute;
+    right: 0px;
+    bottom: 167px;
+    width: 416px;
+    height: 250px;
+}
+
+.replay-cam-wrapper img {
+    position: absolute;
+    width: 416px;
+    left: 0px;
+    bottom: 0px;
+}
+
+.replay-cam-wrapper div {
+    position: absolute;
+    bottom: 13px;
+    left: 7px;
+    width: 400px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.replay-cam-wrapper .replay-cam {
+    position: absolute;
+    width: 400px;
+    height: 230px;
+    left: 7px;
+    bottom: 10px;
+}
+
 .player-picture {
     position: absolute;
     right: 0px;

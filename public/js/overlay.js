@@ -116,6 +116,37 @@ const Overlay = {
         $('.scorebug').show();
         $('.gameinfo').show();
         $('.playerbug').show();
+    },
+    /**
+     * 
+     * @param {String} name 
+     * @param {Number} team 
+     * @param {*} cams 
+     */
+    loadReplayCamData(name, team, cams) {
+        if (team === 0) {
+            $('.replay-cam-wrapper .replay-player-name').removeClass('formorange');
+            $('.replay-cam-wrapper .replay-player-name').addClass('formblue');
+        } else {
+            $('.replay-cam-wrapper .replay-player-name').removeClass('formblue');
+            $('.replay-cam-wrapper .replay-player-name').addClass('formorange');
+        }
+
+        /*
+            {
+                playerCams: [[
+                player: Player | null,
+                obs: string,
+                id: string
+                ]]
+            }
+            Spielerobjekt im Array cams[team] wird mit IGN gesucht
+            Rückgabe Index
+         */
+        const findPlayerIndex = (element) => element.player.ign === name;
+
+        $('.replay-cam-wrapper .replay-cam').attr("src", cams[team][cams[team].findIndex(findPlayerIndex)].obs);
+        $('.replay-cam-wrapper .replay-player-name').text(name);
     }
 }
 
