@@ -85,7 +85,7 @@ const Overlay = {
             }
         });
     },
-    updatePlayerCams({playerCams}) {
+    updatePlayerCams(playerCams) {
         console.log(playerCams);
         playerCams.forEach((players, teamId) => {
             const team = teamId === 0 ? 'left' : 'right';

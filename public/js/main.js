@@ -2,7 +2,7 @@ let rocsState;
 
 console.log("Initialize");
 
-$('#stinger').hide();
+//$('#stinger').hide();
 //Overlay.hideGameOverlay();
 $("#postMatchStats").hide();
 $("#overlay-replay").hide();
